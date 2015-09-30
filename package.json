@@ -1,0 +1,14 @@
+{
+    "name": "speed-tracker",
+    "version": "1.0.0",
+    "description": "Scheduled speed tracker using speedtest.net.",
+    "main": "speed-tracker.js",
+    "dependencies": {
+        "speedtest-net": "1.1.0",
+        "sqlite3": "3.1.0",
+        "moment": "2.10.6",
+        "cron": "1.0.9"
+    },
+    "author": "David Hooey (davidhooey@gmail.com)",
+    "license": "MIT"
+}
