@@ -1,11 +1,7 @@
 var sqlite3   = require('sqlite3').verbose();
 var speedTest = require('speedtest-net');
-var fs        = require('fs');
 var moment    = require('moment');
 var CronJob   = require('cron').CronJob;
-
-var dbFile = 'speed-tracker.db';
-var dbFileExists = fs.existsSync(dbFile);
 
 var job = new CronJob({
     cronTime: '00,15,30,45 * * * *',
@@ -39,30 +35,25 @@ var job = new CronJob({
             //    }
             // }
 
-            if(!dbFileExists) {
-                fs.openSync(dbFile, 'w');
-            }
-
-            var db = new sqlite3.Database(dbFile);
+            var db = new sqlite3.Database('speed-tracker.db');
 
             db.serialize(function() {
-                if(!dbFileExists) {
-                    db.run('create table speed_tracker \
-                            ( \
-                                id              integer primary key, \
-                                run_at          timestamp, \
-                                ping            real, \
-                                download        real, \
-                                upload          real, \
-                                client_ip       varchar(64), \
-                                client_isp      varchar(64), \
-                                server_host     varchar(64), \
-                                server_location varchar(64), \
-                                server_country  varchar(64), \
-                                server_distance real \
-                            )'
-                    );
-                }
+
+                db.run('create table if not exists speed_tracker \
+                        ( \
+                            id              integer primary key, \
+                            run_at          timestamp, \
+                            ping            real, \
+                            download        real, \
+                            upload          real, \
+                            client_ip       varchar(64), \
+                            client_isp      varchar(64), \
+                            server_host     varchar(64), \
+                            server_location varchar(64), \
+                            server_country  varchar(64), \
+                            server_distance real \
+                        )'
+                );
 
                 var stmt = db.prepare('insert into speed_tracker \
                                         ( \
@@ -71,7 +62,7 @@ var job = new CronJob({
                                             download, \
                                             upload, \
                                             client_ip, \
-                                           client_isp, \
+                                            client_isp, \
                                             server_host, \
                                             server_location, \
                                             server_country, \
