@@ -58,9 +58,9 @@ sqlite3 speed-tracker.db
 ```sql
 -- Average Speeds
 select
-    avg(download) avg_download,
-    avg(upload) avg_upload,
-    avg(ping) avg_ping
+    round(avg(download),2) avg_download,
+    round(avg(upload),2) avg_upload,
+    round(avg(ping),2) avg_ping
 from
     speed_tracker;
 ```
@@ -69,9 +69,9 @@ from
 -- Averge Speeds Per Hour Of Day
 select
     substr(run_at, 12, 2) hour,
-    avg(download) avg_download,
-    avg(upload) avg_upload,
-    avg(ping) avg_ping
+    round(avg(download),2) avg_download,
+    round(avg(upload),2) avg_upload,
+    round(avg(ping),2) avg_ping
 from
     speed_tracker
 group by
